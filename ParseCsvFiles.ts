@@ -12,21 +12,42 @@ const cols = [2, 3, 4, 5, 8, 9, 10, 11, 12]
 const activityTypes = ['מחלה','חופש','חצי חופשה','חצי חופש','עבודה מהבית','מילואים','עבודה אצל לקוח','אחר','חופשה'];
 
 const isTimeActivity = (activity) => (activity && !activityTypes.includes(activity));
+const isMultipleTimeActivity = (activity) => (activity && activity.includes('\r'));
 
-const findTimeIn = (row) => (row[9].split(' <— ')[1] );
-const findTimeOut = (row) => (row[9].split(' <— ')[0]);
+const findTimeIn = (time) => (time.split(' <— ')[1] );
+const findTimeOut = (time) => (time.split(' <— ')[0]);
 
 const mapper = (row) => {
-  const hasTimes = isTimeActivity(row[9]);
-  const timeIn = hasTimes ? findTimeIn(row).replace('*', '') : '';
-  const timeOut = hasTimes ? findTimeOut(row).replace('*', '') : '';
+  const rawTime = row[9];
+  const hasTimes = isTimeActivity(rawTime);
+  const hasMultipleTimes = isMultipleTimeActivity(rawTime);
+  let timeIn = '';
+  let timeOut = '';
+  if (hasTimes && hasMultipleTimes) {
+    const multipleTimes = rawTime.split('\r')
+    let aggregatedTime = 0;
+    multipleTimes.forEach(parsedTime => {
+      const tIn = findTimeIn(parsedTime).replace('*', '');
+      const tOut = findTimeOut(parsedTime).replace('*', '');
+      const tInHours = parseInt(tIn.slice(0, 2));
+      const tOutHours = parseInt(tOut.slice(0, 2));
+
+      aggregatedTime+=(tOutHours-tInHours)
+      timeIn = timeIn ? timeIn : tIn
+      timeOut = (parseInt(timeIn.slice(0, 2)) + aggregatedTime).toString() + ':00';
+    })
+  } else if (hasTimes) {
+    timeIn = findTimeIn(rawTime).replace('*', '');
+    timeOut = findTimeOut(rawTime).replace('*', '');
+  }
+
   const activity = {
     hours150: row[2],
     hours125: row[3],
     hoursExtra: row[4],
     hoursRegular: row[5],
     hoursTotal: row[8],
-    activity: row[9],
+    activity: row[9].replace('\r', ' '),
     dayType: row[10],
     day: row[11],
     date: row[12],  // 'DD/MM'
@@ -34,7 +55,8 @@ const mapper = (row) => {
     timeOut,
     hasTimes,
   }
-  return Object.values(activity).join(',');
+  return Object.values(activity)
+    // .join(',');
 }
 
 const parseCsvString = async (csvString) => {
@@ -82,8 +104,9 @@ export const handler: Handler = async (event: APIGatewayEvent, context: Context,
       if (rows && rows.length && rows.length > 1) {
         const headers = rows.shift()
           .filter((col, i) => cols.includes(i))
-          .concat(['timeIn', 'timeOut', 'hasTimes'])
+          .concat(['זמן כניסה', 'זמן יציאה', 'נמצאו זמנים'])
           .join(',');
+
         const body = rows.filter(row => !!row[12])
           .map(mapper)
           .join('\n');
