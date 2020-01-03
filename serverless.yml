@@ -1,14 +1,45 @@
 service:
-  name: CsvParserEditor
+  name: csv-convert
 
 # Add the serverless-webpack plugin
 plugins:
   - serverless-webpack
   - serverless-offline
+
 provider:
   name: aws
-  runtime: nodejs10.9
+  runtime: nodejs10.x
+  stage: ${opt:stage, 'dev'}
+  versionFunctions: false
+  region: ${opt:region, 'eu-west-1'}
+  logRetentionInDays: 7
+  timeout: 15
+  deploymentBucket:
+    name: ${env:COMPANY, 'someprefix'}.serverless.${self:provider.region}.deploys
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - Fn::Join:
+            - ""
+            - - "arn:aws:s3:::"
+              - ${self:service}-${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
+        - Fn::Join:
+            - ""
+            - - "arn:aws:s3:::"
+              - ${self:service}-${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
+              - "/*"
 
 functions:
-  ParseCsvFiles:
-    handler: ParseCsvFiles.handler
+  convert:
+    handler: convert.handler
+    events:
+      - s3:
+          bucket: ${self:service}-${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .csv
+          existing: true

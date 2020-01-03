@@ -1,9 +1,10 @@
 {
-  "name": "csv-parser-editor",
+  "name": "csv-convert",
   "version": "1.0.0",
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
+    "deploy": "SLS_DEBUG=* sls deploy --stage dev",
     "start": "serverless invoke local --function ParseCsvFiles",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
