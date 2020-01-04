@@ -110,12 +110,11 @@ export const handler: Handler = async (event: S3CreateEvent, context: Context) =
         console.info(`Processed ${srcKey} ${body.length} time entries.`)
 
         const content = `${headers}\n${body}`;
-        console.log(srcBucket, `k-${srcKey}`);
         const res = await s3.upload({
             Bucket: srcBucket,
-            Key: `k-${srcKey}`,
+            Key: `${srcKey.slice('uploads/'.length, srcKey.length)}`,
             Body: content,
-        });
+        }).promise();
 
         console.log(res);
     }
