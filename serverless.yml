@@ -25,11 +25,11 @@ provider:
         - Fn::Join:
             - ""
             - - "arn:aws:s3:::"
-              - ${self:service}-${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
+              - ${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
         - Fn::Join:
             - ""
             - - "arn:aws:s3:::"
-              - ${self:service}-${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
+              - ${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
               - "/*"
 
 functions:
@@ -37,7 +37,7 @@ functions:
     handler: convert.handler
     events:
       - s3:
-          bucket: ${self:service}-${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
+          bucket: ${opt:stage}-${env:BUCKET_NAME, 'clockit-reports'}
           event: s3:ObjectCreated:*
           rules:
             - prefix: uploads/

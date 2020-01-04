@@ -109,11 +109,15 @@ export const handler: Handler = async (event: S3CreateEvent, context: Context) =
 
         console.info(`Processed ${srcKey} ${body.length} time entries.`)
 
-        await s3.upload({
+        const content = `${headers}\n${body}`;
+        console.log(srcBucket, `k-${srcKey}`);
+        const res = await s3.upload({
             Bucket: srcBucket,
-            Key: `processed-csv-${srcKey}`,
-            Body: `${headers}\n${body}`,
+            Key: `k-${srcKey}`,
+            Body: content,
         });
+
+        console.log(res);
     }
 
     const response = {
