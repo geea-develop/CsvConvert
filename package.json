@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "csv-parse": "^4.8.2",
+    "csv-parse": "^4.8.8",
     "exceljs": "^3.5.0",
     "xlsx": "^0.15.3"
   },
