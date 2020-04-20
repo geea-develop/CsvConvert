@@ -9,13 +9,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "csv-parse": "^4.8.2",
-    "exceljs": "^3.5.0",
+    "csv-parse": "^4.8.8",
+    "exceljs": "^3.8.2",
     "xlsx": "^0.15.6"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.50",
-    "@types/node": "10.17.20",
+    "@types/node": "13.13.0",
     "serverless": "1.67.3",
     "serverless-offline": "6.1.4",
     "serverless-webpack": "5.3.1",
