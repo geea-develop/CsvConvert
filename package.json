@@ -14,7 +14,7 @@
     "xlsx": "^0.15.6"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.50",
+    "@types/aws-lambda": "8.10.51",
     "@types/node": "13.13.2",
     "serverless": "1.67.3",
     "serverless-offline": "6.1.4",
