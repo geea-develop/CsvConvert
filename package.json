@@ -20,7 +20,7 @@
     "serverless-offline": "6.1.4",
     "serverless-webpack": "5.3.1",
 
-    "source-map-support": "0.5.18",
+    "source-map-support": "0.5.19",
     "ts-loader": "7.0.1",
     "typescript": "3.8.3",
     "webpack": "4.43.0"
