@@ -11,7 +11,7 @@
   "dependencies": {
     "csv-parse": "^4.9.1",
     "exceljs": "^3.9.0",
-    "xlsx": "^0.16.0"
+    "xlsx": "^0.16.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.51",
