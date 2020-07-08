@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.56",
-    "@types/node": "14.0.13",
+    "@types/node": "14.0.19",
     "serverless-offline": "6.4.0",
     "serverless": "1.73.1",
     "serverless-webpack": "5.3.2",
