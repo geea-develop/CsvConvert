@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "csv-parse": "^4.11.1",
-    "exceljs": "^4.0.1",
+    "exceljs": "^4.1.1",
     "xlsx": "^0.16.4"
   },
   "devDependencies": {
